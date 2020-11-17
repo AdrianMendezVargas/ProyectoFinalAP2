@@ -28,6 +28,8 @@ namespace ProyectoFinalAP2.Models
         [Required(ErrorMessage = "Es obligatorio introducir la contraseña")]
         [StringLength(50, ErrorMessage = "Debe contener minimo 4 digitos", MinimumLength = 4)]
         public string Contraseña { get; set; }
+       
+      
 
         public static string Encriptar(string Contraseña)//Esta función encripta la cadena que se le pasa por parámentro
         {

@@ -8,7 +8,7 @@ using ProyectoFinalAP2.DAL;
 namespace ProyectoFinalAP2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20201117212924_Migracion_Inicial")]
+    [Migration("20201117224519_Migracion_Inicial")]
     partial class Migracion_Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,11 @@ namespace ProyectoFinalAP2.Migrations
                     b.Property<string>("Apellido")
                         .IsRequired()
                         .HasMaxLength(30)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Contraseña")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
