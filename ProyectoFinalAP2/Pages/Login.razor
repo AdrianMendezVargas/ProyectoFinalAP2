@@ -1,0 +1,83 @@
+﻿@layout AuthLayout
+@page "/"
+
+<div class="card-header bg-transparent">
+    <h1>@(!Registrarse ? "Inicio de sesion" : "Registrarse")</h1>
+</div>
+<div class="card-body">
+    @if (Registrarse) {
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control input_user" placeholder="Usuario">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="password" class="form-control input_user" placeholder="Contraseña">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
+            </div>
+            <input type="password" class="form-control input_user" placeholder="Confirmar contraseña">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="oi oi-text"></i></span>
+            </div>
+            <input class="form-control input_user" placeholder="Nombres">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="oi oi-text"></i></span>
+            </div>
+            <input class="form-control input_user" placeholder="Apellidos">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            </div>
+            <input class="form-control input_user" placeholder="Email">
+        </div>
+    } else {
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
+            <input type="text" class="form-control input_user" placeholder="Usuario">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            </div>
+            <input type="password" class="form-control input_user" placeholder="Contraseña">
+        </div>
+    }
+    <div class="text-center">
+        <button type="@(!Registrarse ? "submit" : "button")" class="btn @(!Registrarse ? "btn-info" : "")" @onclick="IniciarSesion_Click">Iniciar sesion</button>
+        <button type="@(Registrarse ? "submit" : "button")" class="btn @(Registrarse ? "btn-info" : "")" @onclick="Registrarse_Click">Registrarse</button>
+    </div>
+    <hr />
+    <div class="text-center">
+        Olvidaste la contraseña? <a href="">Cambiar contraseña</a>
+    </div>
+</div>
+    @code {
+        bool Registrarse = false;
+
+        void Registrarse_Click() {
+            if (!Registrarse) {
+                Registrarse = true;
+            }
+        }
+
+        void IniciarSesion_Click() {
+            if (Registrarse) {
+                Registrarse = false;
+            }
+        }
+
+    }
