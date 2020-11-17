@@ -15,7 +15,8 @@ namespace ProyectoFinalAP2.Migrations
                     Nombre = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     Apellido = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    NombreUsuario = table.Column<string>(type: "TEXT", nullable: false)
+                    NombreUsuario = table.Column<string>(type: "TEXT", nullable: false),
+                    Contraseña = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {

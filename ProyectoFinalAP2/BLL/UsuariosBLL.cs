@@ -48,6 +48,7 @@ namespace ProyectoFinalAP2.BLL
 
             try
             {
+                usuario.Contraseña = Usuarios.Encriptar(usuario.Contraseña);
                 contexto.Usuarios.Add(usuario);
                 paso = contexto.SaveChanges() > 0;
             }
@@ -70,6 +71,7 @@ namespace ProyectoFinalAP2.BLL
 
             try
             {
+                usuario.Contraseña = Usuarios.Encriptar(usuario.Contraseña);
                 contexto.Entry(usuario).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
@@ -92,7 +94,10 @@ namespace ProyectoFinalAP2.BLL
 
             try
             {
+               
                 usuario = contexto.Usuarios.Find(id);
+                if (usuario != null)
+                    usuario.Contraseña = Usuarios.DesEncriptar(usuario.Contraseña);
             }
             catch (Exception)
             {
@@ -153,6 +158,9 @@ namespace ProyectoFinalAP2.BLL
 
             return listaUsuarios;
         }
+
+       
+
 
 
     }
