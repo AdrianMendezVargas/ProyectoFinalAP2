@@ -7,159 +7,121 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace ProyectoFinalAP2.BLL
-{
-    public class UsuariosBLL
-    {
-        public static bool Guardar(Usuarios usuario)
-        {
-            if (!Existe(usuario.UsuarioId))
-                return Insertar(usuario);
+namespace ProyectoFinalAP2.BLL {
+    public class UsuariosBLL {
+        public static async Task<bool> Guardar(Usuarios usuario) {
+            if (!await Existe(usuario.NombreUsuario))
+                return await Insertar(usuario);
             else
-                return Modificar(usuario);
+                return await Modificar(usuario);
         }
 
-        public static bool Existe(int id)
-        {
+        public static async Task<bool> Existe(string nombreUsuario) {
             bool encontrado = false;
             Contexto contexto = new Contexto();
 
-            try
-            {
-                encontrado = contexto.Usuarios.Any(u => u.UsuarioId == id);
-            }
-            catch (Exception)
-            {
+            try {
+                encontrado = contexto.Usuarios.Any(u => u.NombreUsuario == nombreUsuario);
+            } catch (Exception) {
 
                 throw;
-            }
-            finally
-            {
+            } finally {
                 contexto.Dispose();
             }
 
             return encontrado;
         }
 
-        public static bool Insertar(Usuarios usuario)
-        {
+        public static async Task<bool> Insertar(Usuarios usuario) {
             bool paso = false;
             Contexto contexto = new Contexto();
 
-            try
-            {
+            try {
                 usuario.Contraseña = Usuarios.Encriptar(usuario.Contraseña);
                 contexto.Usuarios.Add(usuario);
-                paso = contexto.SaveChanges() > 0;
-            }
-            catch (Exception)
-            {
+                paso = await contexto.SaveChangesAsync() > 0;
+            } catch (Exception) {
                 throw;
-            }
-            finally
-            {
+            } finally {
                 contexto.Dispose();
             }
 
             return paso;
         }
 
-        public static bool Modificar(Usuarios usuario)
-        {
+        public static async Task<bool> Modificar(Usuarios usuario) {
             bool paso = false;
             Contexto contexto = new Contexto();
 
-            try
-            {
+            try {
                 usuario.Contraseña = Usuarios.Encriptar(usuario.Contraseña);
                 contexto.Entry(usuario).State = EntityState.Modified;
-                paso = contexto.SaveChanges() > 0;
-            }
-            catch (Exception)
-            {
+                paso = await contexto.SaveChangesAsync() > 0;
+            } catch (Exception) {
                 throw;
-            }
-            finally
-            {
+            } finally {
                 contexto.Dispose();
             }
 
             return paso;
         }
 
-        public static Usuarios Buscar(int id)
-        {
+        public static async Task<Usuarios> Buscar(string nombreUsuario) {
             Contexto contexto = new Contexto();
             Usuarios usuario;
 
-            try
-            {
-               
-                usuario = contexto.Usuarios.Find(id);
-                if (usuario != null)
+            try {
+
+                usuario = await contexto.Usuarios.FindAsync(nombreUsuario);
+                if (usuario != null) {
                     usuario.Contraseña = Usuarios.DesEncriptar(usuario.Contraseña);
-            }
-            catch (Exception)
-            {
+
+                }
+            } catch (Exception) {
                 throw;
-            }
-            finally
-            {
+            } finally {
                 contexto.Dispose();
             }
 
             return usuario;
         }
 
-        public static bool Eliminar(int id)
-        {
+        public static async Task<bool> Eliminar(int id) {
             bool paso = false;
             Contexto contexto = new Contexto();
 
-            try
-            {
+            try {
                 var usuario = contexto.Usuarios.Find(id);
 
-                if (usuario != null)
-                {
+                if (usuario != null) {
                     contexto.Usuarios.Remove(usuario);
-                    paso = (contexto.SaveChanges() > 0);
+                    paso = (await contexto.SaveChangesAsync() > 0);
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 throw;
-            }
-            finally
-            {
+            } finally {
                 contexto.Dispose();
             }
 
             return paso;
         }
 
-        public static List<Usuarios> GetList(Expression<Func<Usuarios, bool>> criterio)
-        {
+        public static async Task<List<Usuarios>> GetList(Expression<Func<Usuarios , bool>> criterio) {
             List<Usuarios> listaUsuarios = new List<Usuarios>();
             Contexto contexto = new Contexto();
 
-            try
-            {
-                listaUsuarios = contexto.Usuarios.Where(criterio).ToList();
-            }
-            catch (Exception)
-            {
+            try {
+                listaUsuarios = await contexto.Usuarios.Where(criterio).ToListAsync();
+            } catch (Exception) {
                 throw;
-            }
-            finally
-            {
+            } finally {
                 contexto.Dispose();
             }
 
             return listaUsuarios;
         }
 
-       
+
 
 
 

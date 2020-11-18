@@ -1,83 +1,139 @@
-﻿@layout AuthLayout
-@page "/"
+﻿@page "/login"
+@layout AuthLayout
+@inject IToastService toast
+@inject NavigationManager NavManager
+
 
 <div class="card-header bg-transparent">
-    <h1>@(!Registrarse ? "Inicio de sesion" : "Registrarse")</h1>
+    <h1>@(!Registrarse ? "Inicio de sesión" : "Registrarse")</h1>
 </div>
 <div class="card-body">
-    @if (Registrarse) {
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
+    @if (!Registrarse) {
+        <EditForm id="inicio-sesion-form" Model="LoginCredenncial" OnValidSubmit="LogearUsuario">
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <InputText type="text" class="form-control input_user" placeholder="Usuario" @bind-Value="LoginCredenncial.Usuario" />
             </div>
-            <input type="text" class="form-control input_user" placeholder="Usuario">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            <ValidationMessage For="()=> LoginCredenncial.Usuario" />
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <InputText type="password" class="form-control input_user" placeholder="Contraseña" @bind-Value="LoginCredenncial.Contraseña" />
             </div>
-            <input type="password" class="form-control input_user" placeholder="Contraseña">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
-            </div>
-            <input type="password" class="form-control input_user" placeholder="Confirmar contraseña">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="oi oi-text"></i></span>
-            </div>
-            <input class="form-control input_user" placeholder="Nombres">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="oi oi-text"></i></span>
-            </div>
-            <input class="form-control input_user" placeholder="Apellidos">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-            </div>
-            <input class="form-control input_user" placeholder="Email">
-        </div>
+            <ValidationMessage For="()=> LoginCredenncial.Contraseña" />
+            <DataAnnotationsValidator />
+        </EditForm>
+
     } else {
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
+        <EditForm id="registro-form"  Model="UsuarioEnRegistro" OnValidSubmit="RegistrarUsuario">
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                </div>
+                <InputText type="text" class="form-control input_user" placeholder="Usuario" @bind-Value="UsuarioEnRegistro.NombreUsuario" />
             </div>
-            <input type="text" class="form-control input_user" placeholder="Usuario">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fas fa-key"></i></span>
+            <ValidationMessage For="()=> UsuarioEnRegistro.NombreUsuario" />
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                </div>
+                <InputText type="password" class="form-control input_user" placeholder="Contraseña" @bind-Value="UsuarioEnRegistro.Contraseña" />
             </div>
-            <input type="password" class="form-control input_user" placeholder="Contraseña">
-        </div>
+            <ValidationMessage For="()=> UsuarioEnRegistro.Contraseña" />
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
+                </div>
+                <input type="password" class="form-control input_user" placeholder="Confirmar contraseña" @bind="ClaveConfirmar">
+            </div>
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="oi oi-text"></i></span>
+                </div>
+                <InputText class="form-control input_user" placeholder="Nombres" @bind-Value="UsuarioEnRegistro.Nombre" />
+            </div>
+            <ValidationMessage For="()=> UsuarioEnRegistro.Nombre" />
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="oi oi-text"></i></span>
+                </div>
+                <InputText class="form-control input_user" placeholder="Apellidos" @bind-Value="UsuarioEnRegistro.Apellido" />
+            </div>
+            <ValidationMessage For="()=> UsuarioEnRegistro.Apellido" />
+            <div class="input-group mt-3">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                <InputText type="email" class="form-control input_user" placeholder="Email" @bind-Value="UsuarioEnRegistro.Email" />
+            </div>
+            <ValidationMessage For="()=> UsuarioEnRegistro.Email" />
+            <DataAnnotationsValidator/>
+        </EditForm>
+
     }
-    <div class="text-center">
-        <button type="@(!Registrarse ? "submit" : "button")" class="btn @(!Registrarse ? "btn-info" : "")" @onclick="IniciarSesion_Click">Iniciar sesion</button>
-        <button type="@(Registrarse ? "submit" : "button")" class="btn @(Registrarse ? "btn-info" : "")" @onclick="Registrarse_Click">Registrarse</button>
+    <div class="text-center mt-3">
+        <button type="@(!Registrarse ? "submit" : "button")" form="inicio-sesion-form" class="btn @(!Registrarse ? "btn-info" : "")" @onclick="IniciarSesion_Click">Iniciar sesión</button>
+        <button type="@(Registrarse ? "submit" : "button")" form="registro-form" class="btn @(Registrarse ? "btn-info" : "")" @onclick="Registrarse_Click">Registrarse</button>
     </div>
     <hr />
     <div class="text-center">
         Olvidaste la contraseña? <a href="">Cambiar contraseña</a>
     </div>
+
 </div>
-    @code {
-        bool Registrarse = false;
+@code {
 
-        void Registrarse_Click() {
-            if (!Registrarse) {
-                Registrarse = true;
+    Usuarios UsuarioEnRegistro = new Usuarios();
+    Credencial LoginCredenncial = new Credencial();
+
+    bool Registrarse = false;
+    string ClaveConfirmar;
+
+    async Task RegistrarUsuario() {
+        if (await UsuariosBLL.Existe(UsuarioEnRegistro.NombreUsuario)) {
+            toast.ShowWarning("Este nombre usuario ya existe.");
+        } else {
+            if (UsuarioEnRegistro.Contraseña == ClaveConfirmar) {
+                bool registrado = await UsuariosBLL.Insertar(UsuarioEnRegistro);
+                if (registrado) {
+                    toast.ShowSuccess("Registrado con exito.");
+                    Registrarse = false;
+                }
+            } else {
+                toast.ShowWarning("Las contraseñas no coinciden.");
             }
-        }
 
-        void IniciarSesion_Click() {
-            if (Registrarse) {
-                Registrarse = false;
-            }
         }
-
     }
+
+    async Task LogearUsuario() {
+        var usuarioEncontrado = await UsuariosBLL.Buscar(LoginCredenncial.Usuario);
+        if (usuarioEncontrado != null) {
+            if (usuarioEncontrado.Contraseña == LoginCredenncial.Contraseña) {
+                AppState.Usuario = usuarioEncontrado;
+                NavManager.NavigateTo("index");
+            } else {
+                toast.ShowWarning("Datos incorrectos.");
+            }
+        } else {
+            toast.ShowWarning("Datos incorrectos.");
+        }
+    }
+
+    void Registrarse_Click() {
+        if (!Registrarse) {
+            UsuarioEnRegistro = new Usuarios();
+            Registrarse = true;
+        }
+    }
+
+    void IniciarSesion_Click() {
+        if (Registrarse) {
+            Registrarse = false;
+        }
+    }
+
+}

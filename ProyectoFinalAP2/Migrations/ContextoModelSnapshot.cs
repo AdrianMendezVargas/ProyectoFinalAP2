@@ -17,9 +17,8 @@ namespace ProyectoFinalAP2.Migrations
 
             modelBuilder.Entity("ProyectoFinalAP2.Models.Usuarios", b =>
                 {
-                    b.Property<int>("UsuarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("NombreUsuario")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -40,11 +39,7 @@ namespace ProyectoFinalAP2.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UsuarioId");
+                    b.HasKey("NombreUsuario");
 
                     b.ToTable("Usuarios");
                 });

@@ -8,8 +8,8 @@ using ProyectoFinalAP2.DAL;
 namespace ProyectoFinalAP2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20201117224519_Migracion_Inicial")]
-    partial class Migracion_Inicial
+    [Migration("20201118012439_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,9 +19,8 @@ namespace ProyectoFinalAP2.Migrations
 
             modelBuilder.Entity("ProyectoFinalAP2.Models.Usuarios", b =>
                 {
-                    b.Property<int>("UsuarioId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("NombreUsuario")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Apellido")
                         .IsRequired()
@@ -42,11 +41,7 @@ namespace ProyectoFinalAP2.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("UsuarioId");
+                    b.HasKey("NombreUsuario");
 
                     b.ToTable("Usuarios");
                 });
