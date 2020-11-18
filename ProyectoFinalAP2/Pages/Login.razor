@@ -94,7 +94,7 @@
 
     async Task RegistrarUsuario() {
         if (await UsuariosBLL.Existe(UsuarioEnRegistro.NombreUsuario)) {
-            toast.ShowWarning("Este nombre usuario ya existe.");
+            toast.ShowWarning("Este nombre de usuario ya existe.");
         } else {
             if (UsuarioEnRegistro.Contraseña == ClaveConfirmar) {
                 bool registrado = await UsuariosBLL.Insertar(UsuarioEnRegistro);
